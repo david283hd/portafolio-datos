@@ -1,0 +1,835 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>David Anastacio · Analista de Datos</title>
+<meta name="description" content="Portafolio de David Anastacio: Power BI, SQL, Python y reportes automatizados para cobranzas.">
+<meta property="og:title" content="David Anastacio · Analista de Datos">
+<meta property="og:description" content="Reportes que se usan todos los días. Power BI, SQL, Python y HTML automatizado.">
+<meta property="og:image" content="img/09_gestoras_desempeno.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --paper:#f7f6f2; --white:#ffffff; --ink:#0f1123; --ink-2:#43465e; --mute:#8a8ca0; --line:#e6e4dc; --line-2:#d9d7ce;
+  --indigo:#3b3fd8; --indigo-2:#5a5ef0; --indigo-soft:#ecebff; --navy:#16195a;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s6:#008300; --s7:#6250d6;
+  --good:#11804a; --warn:#b07400; --bad:#c9342f;
+  --serif:"Instrument Serif",Georgia,serif; --sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --ease:cubic-bezier(.2,.7,.1,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+::selection{background:var(--indigo);color:#fff}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.mono{font-family:var(--mono)}
+em.s{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:-.01em}
+
+/* barra de progreso */
+#prog{position:fixed;top:0;left:0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--indigo),var(--s3));z-index:100}
+
+/* nav */
+nav.top{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:4px;padding:6px;background:rgba(255,255,255,.78);backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(15,17,35,.08);border-radius:99px;box-shadow:0 8px 30px rgba(15,17,35,.06);max-width:calc(100% - 24px);overflow-x:auto;scrollbar-width:none}
+nav.top::-webkit-scrollbar{display:none}
+nav.top a{text-decoration:none;font-size:13.5px;font-weight:500;color:var(--ink-2);padding:7px 14px;border-radius:99px;white-space:nowrap;transition:background .2s,color .2s}
+nav.top a:hover{color:var(--ink)}
+nav.top a.on{background:var(--ink);color:#fff}
+nav.top .me{font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--s3);box-shadow:0 0 0 0 rgba(27,175,122,.6);animation:ping 2s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(27,175,122,.55)}70%{box-shadow:0 0 0 8px rgba(27,175,122,0)}100%{box-shadow:0 0 0 0 rgba(27,175,122,0)}}
+
+/* hero */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 0 80px;overflow:hidden;--mx:70%;--my:30%}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(15,17,35,.13) 1px,transparent 1px);background-size:22px 22px;mask-image:radial-gradient(520px circle at var(--mx) var(--my),#000 0%,transparent 70%);-webkit-mask-image:radial-gradient(520px circle at var(--mx) var(--my),#000 0%,transparent 70%);pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;pointer-events:none;animation:float 18s ease-in-out infinite}
+.b1{width:520px;height:520px;background:#c9c8ff;top:-120px;right:-80px}
+.b2{width:380px;height:380px;background:#bdf0dc;bottom:-120px;left:-60px;animation-delay:-6s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-40px,30px) scale(1.08)}}
+.hero .grid{position:relative;display:grid;grid-template-columns:1.25fr .9fr;gap:56px;align-items:center}
+.kicker{font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.kicker span+span::before{content:"/";margin-right:14px;color:var(--line-2)}
+h1{font-size:clamp(42px,6.6vw,88px);line-height:.98;letter-spacing:-.035em;font-weight:700;margin:22px 0 26px}
+h1 em.s{font-size:1.08em;color:var(--indigo)}
+.lede{font-size:clamp(17px,1.7vw,19.5px);color:var(--ink-2);max-width:600px;margin:0 0 34px}
+.lede b{color:var(--ink);font-weight:600}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn{position:relative;display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:99px;font-weight:600;font-size:15px;text-decoration:none;transition:transform .25s var(--ease),box-shadow .25s,background .25s}
+.btn.pri{background:var(--ink);color:#fff;box-shadow:0 10px 30px rgba(15,17,35,.22)}
+.btn.pri:hover{background:var(--indigo);transform:translateY(-2px)}
+.btn.sec{background:#fff;border:1px solid var(--line-2);color:var(--ink)}
+.btn.sec:hover{transform:translateY(-2px);border-color:var(--ink)}
+.btn .arr{transition:transform .25s var(--ease)}
+.btn:hover .arr{transform:translateX(4px)}
+.split .w{display:inline-block;overflow:hidden;vertical-align:bottom}
+.split .w>span{display:inline-block;transform:translateY(105%);animation:up .9s var(--ease) forwards}
+@keyframes up{to{transform:none}}
+.fade-in{opacity:0;transform:translateY(14px);animation:fi .9s var(--ease) forwards}
+@keyframes fi{to{opacity:1;transform:none}}
+
+/* tarjeta viva */
+.live{position:relative;background:#fff;border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 30px 80px -20px rgba(22,25,90,.25),0 2px 0 rgba(255,255,255,.8) inset;transform:perspective(1000px) rotateY(-6deg) rotateX(3deg);transition:transform .6s var(--ease)}
+.live:hover{transform:perspective(1000px) rotateY(0) rotateX(0)}
+.live .row{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--mute)}
+.live .badge{font-family:var(--mono);font-size:11px;background:#e7f7ef;color:var(--good);padding:3px 9px;border-radius:99px;display:inline-flex;gap:6px;align-items:center}
+.live .big{font-size:42px;font-weight:800;letter-spacing:-.03em;margin:8px 0 2px;font-variant-numeric:tabular-nums}
+.live .pbar{height:8px;background:#eeedf6;border-radius:99px;overflow:hidden;margin:12px 0 6px}
+.live .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--indigo),var(--indigo-2));border-radius:99px;transition:width 1s var(--ease)}
+.live svg{display:block;width:100%;height:120px;margin-top:12px}
+.live .foot{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
+.live .foot b{display:block;font-size:17px;font-variant-numeric:tabular-nums}
+.live .foot span{font-size:11.5px;color:var(--mute)}
+.floatchip{position:absolute;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 14px;font-size:12.5px;box-shadow:0 14px 40px -10px rgba(15,17,35,.2);animation:float 9s ease-in-out infinite}
+.floatchip b{display:block;font-size:16px}
+.fc1{left:-46px;bottom:34px}
+.fc2{right:-22px;top:-26px;animation-delay:-3s}
+
+/* marquee */
+.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff;overflow:hidden;padding:18px 0}
+.track{display:flex;gap:56px;width:max-content;animation:mq 38s linear infinite}
+.track span{font-family:var(--serif);font-size:30px;font-style:italic;color:var(--ink);white-space:nowrap;display:flex;align-items:center;gap:56px}
+.track span::after{content:"✳";font-style:normal;font-size:18px;color:var(--indigo)}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* secciones */
+section{padding:120px 0 40px;position:relative}
+.label{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--indigo);display:flex;align-items:center;gap:10px}
+.label::before{content:"";width:28px;height:1px;background:currentColor}
+h2{font-size:clamp(34px,4.6vw,60px);line-height:1.02;letter-spacing:-.03em;margin:16px 0 18px;font-weight:700}
+h3{font-size:22px;letter-spacing:-.01em;margin:0 0 8px}
+.intro{font-size:18px;color:var(--ink-2);max-width:680px}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(34px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}.rv.d4{transition-delay:.32s}
+
+/* números */
+.nums{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ink);margin-top:40px}
+.nums div{padding:26px 22px 8px 0}
+.nums div+div{padding-left:22px;border-left:1px solid var(--line)}
+.nums .n{font-size:clamp(38px,4.4vw,58px);font-weight:700;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.nums .n small{font-size:.45em;font-weight:600;color:var(--ink-2);margin-left:4px}
+.nums p{margin:10px 0 0;font-size:14.5px;color:var(--ink-2)}
+
+/* destacado */
+.feature{background:var(--navy);color:#fff;border-radius:32px;padding:72px 0 64px;margin:0 12px;position:relative;overflow:hidden}
+.feature::after{content:"";position:absolute;width:700px;height:700px;right:-250px;top:-300px;background:radial-gradient(circle,rgba(90,94,240,.55),transparent 65%);pointer-events:none}
+.feature .label{color:#a9abff}
+.feature h2{color:#fff}
+.feature .intro{color:#c9cae8}
+.star{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;background:linear-gradient(90deg,#ffd76a,#ffb547);color:#3d2700;padding:5px 12px;border-radius:99px;font-weight:600}
+.fgrid{display:grid;grid-template-columns:.85fr 1.15fr;gap:48px;margin-top:40px;position:relative;z-index:1}
+.find{counter-reset:f;display:flex;flex-direction:column;gap:14px}
+.find div{position:relative;padding:18px 18px 18px 58px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;font-size:15px;color:#dcdcf2}
+.find div::before{counter-increment:f;content:"0" counter(f);position:absolute;left:18px;top:17px;font-family:var(--mono);font-size:13px;color:#ffd76a}
+.find b{color:#fff}
+.frame{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 40px 90px -20px rgba(0,0,0,.55)}
+.frame .bar{height:34px;background:#f1f0ec;display:flex;align-items:center;gap:7px;padding:0 14px;border-bottom:1px solid var(--line)}
+.frame .bar i{width:11px;height:11px;border-radius:50%;background:#e0ded6}
+.frame .bar i:nth-child(1){background:#ff6058}.frame .bar i:nth-child(2){background:#ffbd2e}.frame .bar i:nth-child(3){background:#28c941}
+.frame .bar span{margin-left:10px;font-family:var(--mono);font-size:11.5px;color:var(--mute)}
+.zoomwrap{position:relative;overflow:hidden;cursor:zoom-in;max-height:560px}
+.zoomwrap img{transition:transform .5s var(--ease);transform-origin:var(--zx,50%) var(--zy,50%)}
+.zoomwrap:hover img{transform:scale(1.9)}
+.cap{font-size:12.5px;color:#a3a5c8;margin-top:12px}
+
+/* panel interactivo gestoras */
+.panel{background:#fff;color:var(--ink);border-radius:24px;padding:28px;margin-top:56px;position:relative;z-index:1}
+.panel .top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.panel h3{font-size:24px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips button{font:inherit;font-size:13.5px;font-weight:600;border:1px solid var(--line-2);background:#fff;color:var(--ink-2);padding:8px 14px;border-radius:99px;cursor:pointer;transition:all .2s}
+.chips button:hover{border-color:var(--ink);color:var(--ink)}
+.chips button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.sim{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--warn);background:#fff3d6;padding:4px 10px;border-radius:99px;white-space:nowrap}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0 22px}
+.kpis div{background:var(--paper);border-radius:14px;padding:14px 16px}
+.kpis b{display:block;font-size:28px;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1.15}
+.kpis span{font-size:12.5px;color:var(--ink-2)}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.cbox{border:1px solid var(--line);border-radius:16px;padding:18px}
+.cbox h4{margin:0 0 4px;font-size:15.5px}
+.cbox .q{font-size:12.5px;color:var(--mute);margin-bottom:12px}
+.cbox.wide{grid-column:1/-1}
+.hb{display:grid;grid-template-columns:86px 1fr 64px;align-items:center;gap:10px;margin:7px 0;font-size:13px;transition:opacity .3s}
+.hb .tr{position:relative;height:20px;background:#f0eff7;border-radius:4px;overflow:hidden}
+.hb .tr i{position:absolute;left:0;top:0;bottom:0;border-radius:0 4px 4px 0;width:0;transition:width 1.1s var(--ease)}
+.hb .v{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.dim{opacity:.28}
+.stk{display:flex;height:22px;border-radius:4px;overflow:hidden;gap:2px;background:#fff}
+.stk i{height:100%;width:0;transition:width 1.1s var(--ease)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink-2);margin-bottom:10px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.cols{display:flex;align-items:flex-end;gap:6px;height:180px;padding-top:24px;border-bottom:1px solid var(--line)}
+.cols div{flex:1;position:relative;height:100%;display:flex;align-items:flex-end}
+.cols i{display:block;width:100%;height:0;border-radius:4px 4px 0 0;background:var(--indigo);transition:height 1.1s var(--ease),background .2s}
+.cols div:hover i{background:var(--s2)}
+.xl{display:flex;gap:6px;font-size:11px;color:var(--mute);margin-top:6px}
+.xl span{flex:1;text-align:center;font-family:var(--mono)}
+.concl{background:var(--indigo-soft);border-radius:12px;padding:12px 16px;font-size:14.5px;margin-top:16px}
+.how{font-size:12px;color:var(--mute);margin-top:10px}
+
+/* capítulos */
+.chapter{display:grid;grid-template-columns:240px 1fr;gap:48px;padding:72px 0;border-top:1px solid var(--line)}
+.chapter .side{position:sticky;top:110px;align-self:start}
+.chapter .num{font-family:var(--serif);font-size:96px;line-height:.9;color:var(--indigo);font-style:italic}
+.chapter .side h3{font-size:24px;margin-top:10px}
+.chapter .side p{font-size:14px;color:var(--ink-2);margin:6px 0 0}
+.meter{height:4px;background:var(--line);border-radius:4px;margin-top:16px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--indigo);width:0;transition:width 1.4s var(--ease)}
+.in .meter i,.meter.in i{width:var(--w)}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 0}
+.tags span{font-family:var(--mono);font-size:11px;background:#fff;border:1px solid var(--line);padding:3px 9px;border-radius:99px;color:var(--ink-2)}
+
+/* abanico de capturas */
+.fan{position:relative;height:420px;margin-bottom:28px}
+.fan figure{position:absolute;margin:0;width:56%;top:20px;background:#fff;padding:8px;border-radius:14px;box-shadow:0 20px 50px -15px rgba(15,17,35,.3);transition:transform .6s var(--ease),z-index 0s;cursor:zoom-in}
+.fan figure img{border-radius:8px}
+.fan figure:nth-child(1){left:0;transform:rotate(-6deg);z-index:1}
+.fan figure:nth-child(2){left:22%;transform:rotate(1deg) translateY(10px);z-index:2}
+.fan figure:nth-child(3){left:44%;transform:rotate(7deg) translateY(4px);z-index:1}
+.fan:hover figure:nth-child(1){transform:rotate(-9deg) translateX(-30px)}
+.fan:hover figure:nth-child(3){transform:rotate(10deg) translateX(30px)}
+.fan figure:hover{z-index:5 !important;transform:rotate(0) scale(1.04) !important}
+.crit{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.crit div{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;font-size:14px;color:var(--ink-2)}
+.crit b{display:block;color:var(--ink);font-size:15px;margin-bottom:6px}
+.crit ul{margin:0;padding-left:18px}
+.crit li{margin:4px 0}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px}
+
+/* pestañas */
+.tabs{display:inline-flex;gap:4px;background:#efede6;padding:4px;border-radius:99px;margin-bottom:16px;flex-wrap:wrap}
+.tabs button{font:inherit;font-size:13.5px;font-weight:600;border:0;background:transparent;color:var(--ink-2);padding:8px 16px;border-radius:99px;cursor:pointer;transition:all .25s}
+.tabs button[aria-selected="true"]{background:#fff;color:var(--ink);box-shadow:0 2px 8px rgba(15,17,35,.1)}
+.swap{transition:opacity .35s}
+.psi{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.psi div{font-size:14.5px;color:var(--ink-2)}
+.psi b{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--indigo);margin-bottom:4px}
+
+/* pipeline */
+.pipe{position:relative;background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px;margin-bottom:22px}
+.pipe svg{width:100%;height:auto;display:block}
+.flowline{stroke-dasharray:6 8;animation:dash 1.2s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-14}}
+
+.lab{background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px}
+.minis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.minis div{background:var(--paper);border-radius:12px;padding:12px 14px}
+.minis b{display:block;font-size:22px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.minis span{font-size:12px;color:var(--ink-2)}
+input[type=range]{width:100%;accent-color:var(--indigo)}
+.chart{position:relative}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line)}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);font-weight:400}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+
+.autos{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.auto{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;position:relative;overflow:hidden;transition:transform .35s var(--ease),border-color .35s}
+.auto:hover{transform:translateY(-4px);border-color:var(--ink)}
+.auto::after{content:"";position:absolute;inset:auto -40% -60% auto;width:200px;height:200px;background:radial-gradient(circle,var(--indigo-soft),transparent 70%);opacity:0;transition:opacity .4s}
+.auto:hover::after{opacity:1}
+.auto h4{margin:10px 0 6px;font-size:17px}
+.auto p{margin:0;font-size:14px;color:var(--ink-2)}
+.auto .out{margin-top:12px;font-size:13px;font-weight:600;color:var(--good)}
+
+/* método */
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-top:1px solid var(--ink);margin-top:36px}
+.steps div{padding:22px 18px 0 0}
+.steps div+div{padding-left:18px;border-left:1px solid var(--line)}
+.steps .k{font-family:var(--serif);font-style:italic;font-size:40px;color:var(--indigo);line-height:1}
+.steps b{display:block;margin:10px 0 6px;font-size:17px}
+.steps p{margin:0;font-size:14px;color:var(--ink-2)}
+
+/* contacto */
+.end{padding:140px 0 60px;text-align:center}
+.end h2{font-size:clamp(44px,7vw,104px);line-height:.95}
+.end .cta{justify-content:center;margin-top:34px}
+footer{border-top:1px solid var(--line);padding:26px 0 40px;font-size:12.5px;color:var(--mute)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* tooltip global */
+#tt{position:fixed;pointer-events:none;z-index:90;background:var(--ink);color:#fff;font-size:12.5px;line-height:1.45;padding:8px 11px;border-radius:9px;opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s;max-width:260px}
+#tt.on{opacity:1;transform:none}
+#lb{position:fixed;inset:0;background:rgba(10,11,25,.88);display:none;align-items:center;justify-content:center;z-index:95;padding:20px;cursor:zoom-out;backdrop-filter:blur(6px)}
+#lb img{max-height:94vh;max-width:96vw;border-radius:10px}
+
+@media (max-width:980px){
+  .hero .grid,.fgrid{grid-template-columns:1fr}
+  .live{transform:none;max-width:520px}
+  .fc1{left:-8px}.fc2{right:-8px}
+  .chapter{grid-template-columns:1fr;gap:20px}
+  .chapter .side{position:static}
+  .nums{grid-template-columns:repeat(2,1fr)}
+  .nums div:nth-child(3){border-left:0;padding-left:0}
+  .autos,.crit,.psi{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .steps div{border-left:0 !important;padding-left:0 !important}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  section{padding-top:80px}
+  .cgrid,.autos,.crit,.psi{grid-template-columns:1fr}
+  .kpis,.minis{grid-template-columns:1fr 1fr}
+  .feature{margin:0;border-radius:24px}
+  .panel,.lab,.card{padding:18px}
+  .fan{height:auto;display:grid;gap:12px}
+  .fan figure{position:static;width:100%;transform:none !important}
+  .floatchip{display:none}
+  .hb{grid-template-columns:70px 1fr 54px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important}
+  .rv,.fade-in,.split .w>span{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+
+<nav class="top" aria-label="Secciones">
+  <a class="me" href="#inicio"><span class="dot"></span>David A.</a>
+  <a href="#destacado">Destacado</a>
+  <a href="#camino">Trayectoria</a>
+  <a href="#laboratorio">Demos</a>
+  <a href="#metodo">Método</a>
+  <a href="#contacto">Contacto</a>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="inicio">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="wrap grid">
+    <div>
+      <div class="kicker fade-in"><span>Analista de datos</span><span>Lima, Perú</span><span id="clock" class="mono">--:--</span></div>
+      <h1 class="split" data-split>Cada gráfico que hago responde <em class="s">una pregunta.</em></h1>
+      <p class="lede fade-in" style="animation-delay:.6s">Soy David Anastacio. Hice mis prácticas de datos en cobranzas, en una fintech peruana. Me acostumbré a empezar por lo que el equipo necesitaba saber: <b>quién llega a la meta, a quién llamar primero, si cerramos el mes.</b> Recién después abría Power BI, SQL o Python.</p>
+      <div class="cta fade-in" style="animation-delay:.8s">
+        <a class="btn pri" href="#destacado">Ver el proyecto destacado <span class="arr">→</span></a>
+        <a class="btn sec" href="#contacto">Contactarme</a>
+      </div>
+    </div>
+    <div class="fade-in" style="animation-delay:.5s;position:relative">
+      <div class="live" aria-label="Demostración de tablero en vivo con datos simulados">
+        <div class="row"><span>Cobranza de hoy</span><span class="badge"><span class="dot" style="width:6px;height:6px"></span>en vivo · demo</span></div>
+        <div class="big" id="liveBig">S/ 0</div>
+        <div class="row"><span>Meta S/ 160 000</span><span id="livePct" class="mono">0 %</span></div>
+        <div class="pbar"><i id="liveBar"></i></div>
+        <svg id="spark" viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <div class="foot">
+          <div><b id="lf1">0</b><span>pagos</span></div>
+          <div><b id="lf2">S/ 0</b><span>proyección</span></div>
+          <div><b id="lf3">--:--</b><span>actualizado</span></div>
+        </div>
+      </div>
+      <div class="floatchip fc1"><span style="color:var(--mute)">se actualiza cada</span><b>15 min</b></div>
+      <div class="floatchip fc2"><span style="color:var(--mute)">vs Power BI</span><b style="color:var(--good)">S/ 0 de diferencia</b></div>
+    </div>
+  </div>
+</header>
+
+<div class="marquee" aria-hidden="true"><div class="track" id="track"></div></div>
+
+<!-- ================= NÚMEROS ================= -->
+<section style="padding-top:90px"><div class="wrap">
+  <div class="label rv">En pocas cifras</div>
+  <div class="nums">
+    <div class="rv"><div class="n"><span data-count="15">0</span><small>min</small></div><p>Cada cuánto se actualiza solo el tablero de cobranza del día.</p></div>
+    <div class="rv d1"><div class="n">S/ <span data-count="0">0</span></div><p>De diferencia entre mi resumen por SQL y el Power BI oficial. Lo cuadré al centavo.</p></div>
+    <div class="rv d2"><div class="n"><span data-count="0.79" data-dec="2">0</span></div><p>AUC del modelo que ordena a qué cliente llamar primero, probado en un mes anterior.</p></div>
+    <div class="rv d3"><div class="n"><span data-count="6">0</span><small>meses</small></div><p>De llamadas consolidadas en un modelo estrella para medir a cada gestora.</p></div>
+  </div>
+</div></section>
+
+<!-- ================= DESTACADO ================= -->
+<section id="destacado" style="padding-top:80px">
+<div class="feature">
+  <div class="wrap">
+    <span class="star rv">★ Proyecto destacado</span>
+    <h2 class="rv d1">Desempeño de <em class="s">gestoras</em></h2>
+    <p class="intro rv d2">La líder del equipo tenía una duda concreta: si todas trabajan el mismo horario, ¿por qué unas llegan a la meta y otras se quedan en 98 %? Junté seis meses de registros de la central de llamadas y armé un tablero donde cada gráfico lleva como título la pregunta que responde.</p>
+
+    <div class="fgrid">
+      <div>
+        <div class="find">
+          <div class="rv"><b>Llamar más rápido no asegura la meta.</b> La gestora con más llamadas por hora quedó debajo del 100 %. La que menos llamaba la superó.</div>
+          <div class="rv d1"><b>Lo que marca la diferencia es el compromiso.</b> Las que pasan la meta convierten casi la mitad de sus contactos en promesa de pago.</div>
+          <div class="rv d2"><b>Las pausas dicen más que las horas.</b> En un caso, más de la mitad del tiempo en pausa se iba en "envío de información", una tarea que se puede automatizar.</div>
+          <div class="rv d3"><b>El día tiene dos picos.</b> 11:00 y 14:00 concentran las llamadas; a la 1 de la tarde se cae a la mitad.</div>
+        </div>
+        <div class="tags rv" style="margin-top:18px">
+          <span style="background:transparent;color:#c9cae8;border-color:rgba(255,255,255,.2)">Power BI</span><span style="background:transparent;color:#c9cae8;border-color:rgba(255,255,255,.2)">DAX</span><span style="background:transparent;color:#c9cae8;border-color:rgba(255,255,255,.2)">Modelo estrella</span><span style="background:transparent;color:#c9cae8;border-color:rgba(255,255,255,.2)">Python (consolidación)</span>
+        </div>
+      </div>
+      <div class="rv d1">
+        <div class="frame">
+          <div class="bar"><i></i><i></i><i></i><span>Gestoras · Desempeño.pbix</span></div>
+          <div class="zoomwrap" id="zoom"><img src="img/09_gestoras_desempeno.png" alt="Tablero de Power BI de desempeño de gestoras" class="shot-lb"></div>
+        </div>
+        <div class="cap">Tablero original en Power BI. Pasa el mouse para hacer zoom. Nombres ocultos.</div>
+      </div>
+    </div>
+
+    <div class="panel rv" id="gPanel">
+      <div class="top">
+        <div><h3>Pruébalo tú</h3><div style="font-size:14px;color:var(--ink-2)">Elige una gestora y mira cómo cambia todo el tablero.</div></div>
+        <span class="sim">datos simulados · misma lógica</span>
+      </div>
+      <div class="chips" id="gChips"></div>
+      <div class="kpis" id="gKpis"></div>
+      <div class="cgrid">
+        <div class="cbox"><h4>¿Cuánto del tiempo conectada pasa llamando?</h4><div class="q">Horas por día · barra clara = conectada, oscura = llamando</div><div id="gConn"></div></div>
+        <div class="cbox"><h4>¿Cuántas llamadas hace por hora de trabajo real?</h4><div class="q">Llamadas ÷ horas llamando</div><div id="gRate"></div></div>
+        <div class="cbox"><h4>¿Qué logra cuando le contestan?</h4><div class="q">% de llamadas contestadas</div><div class="legend" id="gOutL"></div><div id="gOut"></div></div>
+        <div class="cbox"><h4>¿En qué se van las pausas?</h4><div class="q">% del tiempo en pausa</div><div class="legend" id="gPauL"></div><div id="gPau"></div></div>
+        <div class="cbox wide"><h4>¿A qué hora se llama más?</h4><div class="q">Llamadas del mes por hora del día (miles)</div><div class="cols" id="gHours"></div><div class="xl" id="gHoursX"></div></div>
+      </div>
+      <div class="concl" id="gConcl"></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ================= TRAYECTORIA ================= -->
+<section id="camino"><div class="wrap">
+  <div class="label rv">Trayectoria</div>
+  <h2 class="rv d1">Cómo llegué <em class="s">hasta aquí</em></h2>
+  <p class="intro rv d2">Cuatro etapas. Cada una nació de algo que la anterior no podía resolver.</p>
+
+  <!-- 01 -->
+  <div class="chapter">
+    <div class="side rv"><div class="num">01</div><h3>Practicar</h3><p>Datasets de ventas y marketing. Aprendí tarjetas, segmentadores y a armar una página.</p><div class="tags"><span>Power BI</span><span>Looker Studio</span></div><div class="meter" style="--w:25%"><i></i></div></div>
+    <div>
+      <div class="fan rv">
+        <figure><img src="img/01_ventas_globales.png" alt="Dashboard de práctica de ventas globales" class="shot-lb"></figure>
+        <figure><img src="img/02_reporte_marketing.png" alt="Reporte de práctica de campañas" class="shot-lb"></figure>
+        <figure><img src="img/03_busquedas_marca_looker.png" alt="Búsquedas de marca en Looker Studio" class="shot-lb"></figure>
+      </div>
+      <p class="rv" style="font-size:15px;color:var(--ink-2);margin:0 0 14px">Los dejo como están. Volví a verlos con lo que sé ahora y esto es lo que cambiaría:</p>
+      <div class="crit">
+        <div class="rv"><b>Ventas globales</b><ul><li>Ordené los meses por monto (8, 4, 3…) y así no se ve la tendencia.</li><li>Puse una línea para zonas geográficas. Eran categorías: tocaba una barra.</li></ul></div>
+        <div class="rv d1"><b>Campañas digitales</b><ul><li>Mostré ingresos pero no costo. Sin costo por venta no se sabe en qué canal invertir.</li><li>El pastel de tres canales se lee mejor como barra.</li></ul></div>
+        <div class="rv d2"><b>Búsquedas de marca</b><ul><li>Nuestra marca debió ir en otro color para que la comparación salte.</li><li>Nueve tajadas son demasiadas: cuatro y "otros".</li></ul></div>
+      </div>
+      <div class="card rv" style="margin-top:16px">
+        <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start">
+          <div><h3 style="font-size:18px">El primer gráfico, rehecho</h3><div style="font-size:14px;color:var(--ink-2)">Mismo dato: venta por mes, una línea por año, en orden de calendario.</div></div>
+          <span class="sim">valores leídos del gráfico original</span>
+        </div>
+        <div class="legend" id="lgRed" style="margin-top:12px"></div>
+        <div class="chart" id="chRed"></div>
+        <div class="concl">Apilado, no se notaba: <b>2022 se cae de setiembre a diciembre.</b> Antes de decir "bajaron las ventas" revisaría si ese año está completo en la fuente.</div>
+        <div class="how">Venta total por mes (millones). Suma del importe de venta por mes calendario.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 -->
+  <div class="chapter">
+    <div class="side rv"><div class="num">02</div><h3>Primer reporte real</h3><p>Campo Cobranzas: siete páginas para seguir a los gestores que visitan clientes.</p><div class="tags"><span>Power BI</span><span>DAX</span><span>Mapas</span></div><div class="meter" style="--w:50%"><i></i></div></div>
+    <div class="card rv">
+      <div class="tabs" role="tablist" id="pbiTabs">
+        <button role="tab" aria-selected="true" data-img="img/07_campo_resumen.png" data-cap="Resumen. Embudo de programados a visitados a pago, y visitas por día.">Resumen</button>
+        <button role="tab" aria-selected="false" data-img="img/05_campo_contactabilidad.png" data-cap="Contactabilidad. Cumplimiento, contacto y el resultado de cada visita, día por día.">Contactabilidad</button>
+        <button role="tab" aria-selected="false" data-img="img/06_campo_evolutivo.png" data-cap="Evolutivo. El embudo mes a mes y la meta contra lo recuperado.">Evolutivo</button>
+        <button role="tab" aria-selected="false" data-img="img/04_campo_driving.png" data-cap="Reporte Driving. La ruta del día de cada gestor, con hora de inicio y mapa de resultados.">Driving</button>
+      </div>
+      <div class="frame" style="box-shadow:0 20px 50px -20px rgba(15,17,35,.3)"><div class="bar"><i></i><i></i><i></i><span id="pbiName">Campo Cobranzas · Resumen</span></div><img id="pbiImg" class="swap shot-lb" src="img/07_campo_resumen.png" alt="Página del reporte Campo Cobranzas"></div>
+      <div style="font-size:13px;color:var(--mute);margin-top:10px" id="pbiCap">Resumen. Embudo de programados a visitados a pago, y visitas por día.</div>
+      <div class="psi">
+        <div><b>El problema</b>No había un solo lugar para ver cuántas visitas se programaban, cuántas se hacían y cuántas terminaban en pago.</div>
+        <div><b>Lo que armé</b>Embudos, comparativo mensual, la ruta del día en un mapa y el avance de meta con filtros por gestor, tramo y producto.</div>
+        <div><b>Lo que aprendí</b>Modelar antes de dibujar. Y que siete páginas sirven poco si la primera no dice la conclusión.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 -->
+  <div class="chapter">
+    <div class="side rv"><div class="num">03</div><h3>Salir del Power BI</h3><p>Refrescar el tablero tardaba demasiado para un reporte que se necesita a las 8 a.m.</p><div class="tags"><span>SQL</span><span>Python</span><span>HTML</span></div><div class="meter" style="--w:75%"><i></i></div></div>
+    <div>
+      <div class="card rv" style="display:grid;grid-template-columns:1.1fr 1fr;gap:26px;align-items:start" id="execCard">
+        <div class="frame" style="box-shadow:0 20px 50px -20px rgba(15,17,35,.3)"><div class="bar"><i></i><i></i><i></i><span>resumen_ejecutivo.html</span></div><img src="img/08_resumen_ejecutivo_html.png" alt="Resumen ejecutivo diario de cobranzas" class="shot-lb" style="cursor:zoom-in"></div>
+        <div>
+          <h3>Resumen ejecutivo para gerencia</h3>
+          <p style="font-size:15px;color:var(--ink-2);margin:0 0 14px">Antes la jefa del equipo lo armaba cada mañana pegando capturas del Power BI. Ahora hay un botón que consulta la base, recalcula todo y otro que lo manda por correo con el texto listo.</p>
+          <p style="font-size:15px;color:var(--ink-2);margin:0 0 14px">Lo difícil fue la confianza. Pasé cada medida DAX a SQL y comparé cifra por cifra con el tablero oficial hasta que no quedó un centavo de diferencia. Recién ahí lo usamos.</p>
+          <div class="tags"><span>MySQL</span><span>pandas</span><span>HTML/CSS</span><span>correo automático</span></div>
+          <div style="font-size:12.5px;color:var(--mute);margin-top:12px">Captura real con nombres y montos ocultos.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 -->
+  <div class="chapter">
+    <div class="side rv"><div class="num">04</div><h3>Que corra solo</h3><p>Proyectar el cierre, priorizar llamadas y dejar procesos que no dependen de mí.</p><div class="tags"><span>Tareas programadas</span><span>Apps Script</span><span>Backtesting</span></div><div class="meter" style="--w:100%"><i></i></div></div>
+    <div>
+      <div class="pipe rv">
+        <svg viewBox="0 0 860 170" role="img" aria-label="Flujo: base de datos, Python, reporte, Drive y correo, equipo">
+          <defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3b3fd8"/></marker></defs>
+          <g font-family="Inter,sans-serif" font-size="13" text-anchor="middle">
+            <path class="flowline" d="M140 85 H200" stroke="#3b3fd8" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+            <path class="flowline" d="M340 85 H400" stroke="#3b3fd8" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+            <path class="flowline" d="M540 85 H600" stroke="#3b3fd8" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+            <path class="flowline" d="M740 85 H780" stroke="#3b3fd8" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+            <rect x="10" y="45" width="130" height="80" rx="14" fill="#f7f6f2" stroke="#d9d7ce"/><text x="75" y="80" font-weight="700" fill="#0f1123">Base MySQL</text><text x="75" y="100" fill="#8a8ca0" font-size="11.5">solo lectura</text>
+            <rect x="210" y="45" width="130" height="80" rx="14" fill="#f7f6f2" stroke="#d9d7ce"/><text x="275" y="80" font-weight="700" fill="#0f1123">Python</text><text x="275" y="100" fill="#8a8ca0" font-size="11.5">SQL + pandas</text>
+            <rect x="410" y="45" width="130" height="80" rx="14" fill="#ecebff" stroke="#3b3fd8"/><text x="475" y="80" font-weight="700" fill="#16195a">HTML · Excel</text><text x="475" y="100" fill="#43465e" font-size="11.5">PNG para el correo</text>
+            <rect x="610" y="45" width="130" height="80" rx="14" fill="#f7f6f2" stroke="#d9d7ce"/><text x="675" y="80" font-weight="700" fill="#0f1123">Drive · Gmail</text><text x="675" y="100" fill="#8a8ca0" font-size="11.5">Apps Script</text>
+            <circle cx="818" cy="85" r="32" fill="#0f1123"/><text x="818" y="82" fill="#fff" font-weight="700" font-size="12">Equipo</text><text x="818" y="97" fill="#a9abff" font-size="10.5">6:00 a.m.</text>
+            <text x="410" y="22" fill="#8a8ca0" font-size="12" font-family="JetBrains Mono,monospace">tarea de Windows · cada 15 min de 7:00 a 23:58</text>
+          </g>
+        </svg>
+      </div>
+      <div class="autos">
+        <div class="auto rv"><div class="tags"><span>Python</span><span>Excel</span></div><h4>Contención diaria</h4><p>Excel del equipo, imagen para el correo y la meta del día por gestora. La productividad va aparte, solo para la jefa.</p><div class="out">Mismos casos que el tablero oficial, sin abrir Power BI.</div></div>
+        <div class="auto rv d1"><div class="tags"><span>Drive</span><span>Apps Script</span></div><h4>Tablero en vivo</h4><p>Se regenera cada 15 minutos y se ve desde el celular en una web interna. Al cierre del día deja un reporte final.</p><div class="out">La jefa ve cómo va el día sin pedírmelo.</div></div>
+        <div class="auto rv d2"><div class="tags"><span>Probabilidad</span></div><h4>A quién llamar primero</h4><p>Probabilidad de pago por cliente según la hora y el punto del mes. La probé contra un mes que ya había cerrado.</p><div class="out">AUC 0.79.</div></div>
+        <div class="auto rv"><div class="tags"><span>Python</span><span>Calidad</span></div><h4>Carga a central de riesgo</h4><p>Cada lunes: altas y bajas generadas desde dos exportes, ubicaciones normalizadas y rechazos corregidos con un script.</p><div class="out">Documentado paso a paso.</div></div>
+        <div class="auto rv d1"><div class="tags"><span>Modelo estrella</span></div><h4>Datos de llamadas</h4><p>Seis meses de exportes de la central consolidados en tablas de gestiones, pausas, sesiones y agentes.</p><div class="out">La base del tablero destacado.</div></div>
+        <div class="auto rv d2"><div class="tags"><span>SEO</span><span>GA4</span></div><h4>Auditoría de la web</h4><p>Revisión técnica del sitio, 117 palabras clave por intención de búsqueda y un plan de 90 días con pedidos a TI.</p><div class="out">Cada pedido con su criterio de aceptación.</div></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ================= LABORATORIO ================= -->
+<section id="laboratorio"><div class="wrap">
+  <div class="label rv">Demos</div>
+  <h2 class="rv d1">Tres reportes <em class="s">que puedes tocar</em></h2>
+  <p class="intro rv d2">Los originales viven en sistemas internos. Los rehíce aquí con datos inventados para que veas cómo funcionan y cómo los leo.</p>
+  <div class="lab rv">
+    <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center">
+      <div class="tabs" role="tablist" id="labTabs" style="margin:0">
+        <button role="tab" aria-selected="true" data-p="p1">Cobranza del día</button>
+        <button role="tab" aria-selected="false" data-p="p2">¿Llegamos a la meta?</button>
+        <button role="tab" aria-selected="false" data-p="p3">¿Quién todavía paga?</button>
+      </div>
+      <span class="sim">datos simulados</span>
+    </div>
+
+    <div id="p1" class="lp" style="margin-top:20px">
+      <label style="font-size:14px;font-weight:600;display:block">Mueve la hora y mira cómo cambia la proyección: <span id="hLbl" class="mono"></span></label>
+      <input type="range" id="hSl" min="8" max="23" value="13" aria-label="Hora simulada">
+      <div class="minis" id="liveMinis"></div>
+      <div class="legend"><span><i style="background:var(--s1)"></i>Cobrado hoy</span><span><i style="background:var(--s2)"></i>Día típico (punteado)</span><span><i style="background:var(--ink-2)"></i>Meta del día</span></div>
+      <div class="chart" id="chLive"></div>
+      <div class="concl" id="liveConcl"></div>
+      <div class="how">Soles acumulados por hora. Proyección = lo cobrado a esa hora ÷ el % que un día típico ya llevaba a la misma hora. Temprano el rango es ancho y lo muestro así.</div>
+    </div>
+
+    <div id="p2" class="lp" style="margin-top:20px" hidden>
+      <div class="minis">
+        <div><b>91.2 %</b><span>avance al día 28</span></div>
+        <div><b style="color:var(--good)">≈101.0 %</b><span>cierre proyectado</span></div>
+        <div><b>≈81 %</b><span>chance de pasar 100 %</span></div>
+        <div><b>±0.8 pts</b><span>error en meses pasados</span></div>
+      </div>
+      <div class="chart" id="chScen"></div>
+      <div class="concl">El escenario realista pasa la meta por un punto, y el método se equivoca por casi lo mismo. Lo que le dije al equipo: <b>llegamos justo, no hay espacio para aflojar.</b></div>
+      <div class="how">% de la meta mensual proyectado al cierre. Dos métodos promediados: multiplicador a la misma altura del mes en meses parecidos, y proyección por fecha de vencimiento.</div>
+    </div>
+
+    <div id="p3" class="lp" style="margin-top:20px" hidden>
+      <div id="chSeg"></div>
+      <div class="concl">Lo que más anticipa el pago es la última gestión. <b>Quien dejó compromiso paga casi tres veces más que quien no contesta.</b> Pasados 15 días de atraso, casi nadie regulariza en el mes.</div>
+      <div class="how">% de clientes atrasados que pagaron antes del cierre, según el resultado de su última gestión. Tomado de un mes ya cerrado y aplicado al mes en curso.</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ================= MÉTODO ================= -->
+<section id="metodo"><div class="wrap">
+  <div class="label rv">Cómo trabajo</div>
+  <h2 class="rv d1">Un número vale si <em class="s">lo puedo defender</em></h2>
+  <div class="steps">
+    <div class="rv"><div class="k">i.</div><b>Definir</b><p>"Mora" tiene más de una definición. Busco la oficial antes de calcular.</p></div>
+    <div class="rv d1"><div class="k">ii.</div><b>Reusar</b><p>Parto de la consulta del dueño del dato, no de cero.</p></div>
+    <div class="rv d2"><div class="k">iii.</div><b>Cuadrar</b><p>Comparo con cifras de control o con el tablero oficial, mismo corte.</p></div>
+    <div class="rv d3"><div class="k">iv.</div><b>Declarar</b><p>Fuente, fecha de corte y definición van junto al número.</p></div>
+    <div class="rv d4"><div class="k">v.</div><b>Contar</b><p>Primero la conclusión. Después un gráfico, una tabla y qué hacer.</p></div>
+  </div>
+  <p class="rv" style="font-size:13px;color:var(--mute);margin-top:40px;max-width:760px">Sobre los datos: las capturas reales tienen ocultos los nombres de personas, los códigos de clientes y las ubicaciones. Las demos usan cifras inventadas. No publico bases, consultas ni accesos de la empresa.</p>
+</div></section>
+
+<!-- ================= CONTACTO ================= -->
+<section class="end" id="contacto"><div class="wrap">
+  <div class="label rv" style="justify-content:center">Contacto</div>
+  <h2 class="rv d1">¿Conversamos<em class="s"> sobre datos?</em></h2>
+  <p class="intro rv d2" style="margin:0 auto">Busco seguir creciendo como analista de datos. Si tu equipo necesita reportes que la gente realmente abra, escríbeme.</p>
+  <div class="cta rv d3">
+    <a class="btn pri" href="https://www.linkedin.com/in/david-anastacio-huertas-2b971a291/" target="_blank" rel="noopener">LinkedIn <span class="arr">→</span></a>
+    <a class="btn sec" href="mailto:davidanastacio20@gmail.com">davidanastacio20@gmail.com</a>
+  </div>
+</div></section>
+
+<footer><div class="wrap"><span>© 2026 David Anastacio</span><span>Hecho a mano en HTML, CSS y JavaScript. Sin plantillas.</span></div></footer>
+
+<div id="tt" role="tooltip"></div>
+<div id="lb" role="dialog" aria-label="Imagen ampliada"><img alt=""></div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const NS='http://www.w3.org/2000/svg';
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const nf=(v,d=0)=>v.toLocaleString('es-PE',{minimumFractionDigits:d,maximumFractionDigits:d});
+const fmtS=v=>'S/ '+nf(Math.round(v));
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
+function txt(p,x,y,s,a={}){const t=el('text',Object.assign({x,y,'font-size':12,fill:'#8a8ca0','font-family':'Inter,sans-serif'},a),p);t.textContent=s;return t}
+
+/* ---- tooltip global (data-tip) ---- */
+const tt=$('#tt');
+document.addEventListener('pointermove',e=>{
+  const t=e.target.closest('[data-tip]');
+  if(!t){tt.classList.remove('on');return}
+  tt.innerHTML=t.dataset.tip;tt.classList.add('on');
+  const x=Math.min(e.clientX+14,innerWidth-tt.offsetWidth-8),y=e.clientY+16+tt.offsetHeight>innerHeight?e.clientY-tt.offsetHeight-12:e.clientY+16;
+  tt.style.left=x+'px';tt.style.top=y+'px';
+});
+
+/* ---- titular con palabras que suben ---- */
+(function(){const h=$('[data-split]');let i=0;
+  const walk=n=>[...n.childNodes].forEach(c=>{
+    if(c.nodeType===3){const f=document.createDocumentFragment();c.textContent.split(/(\s+)/).forEach(w=>{if(!w.trim()){f.appendChild(document.createTextNode(w));return}
+      const o=document.createElement('span');o.className='w';const s=document.createElement('span');s.textContent=w;s.style.animationDelay=(.06*i++ +.15)+'s';o.appendChild(s);f.appendChild(o)});c.replaceWith(f)}
+    else walk(c)});
+  walk(h)})();
+
+/* ---- reloj Lima ---- */
+function clock(){const t=new Intl.DateTimeFormat('es-PE',{timeZone:'America/Lima',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date());$('#clock').textContent=t+' en Lima';$('#lf3').textContent=t}
+clock();setInterval(clock,30000);
+
+/* ---- foco del mouse en el hero ---- */
+const hero=$('.hero');
+hero.addEventListener('pointermove',e=>{const r=hero.getBoundingClientRect();hero.style.setProperty('--mx',(e.clientX-r.left)+'px');hero.style.setProperty('--my',(e.clientY-r.top)+'px')});
+
+/* ---- tarjeta en vivo (simulada) ---- */
+(function(){
+  const META=160000,svg=$('#spark');let total=58200,pagos=391;const pts=[];
+  for(let i=0;i<24;i++)pts.push(18000+i*1700+Math.random()*1500);
+  pts.push(total);
+  const draw=()=>{
+    svg.innerHTML='';const mx=Math.max(...pts,META*.6),mn=0,W=400,H=120;
+    const P=pts.map((v,i)=>[i/(pts.length-1)*W,H-6-(v-mn)/(mx-mn)*(H-16)]);
+    const d='M'+P.map(p=>p.map(n=>n.toFixed(1)).join(',')).join('L');
+    const g=el('linearGradient',{id:'gg',x1:0,y1:0,x2:0,y2:1},el('defs',{},svg));
+    el('stop',{offset:'0%','stop-color':'#3b3fd8','stop-opacity':.22},g);el('stop',{offset:'100%','stop-color':'#3b3fd8','stop-opacity':0},g);
+    el('path',{d:d+`L${W},${H}L0,${H}Z`,fill:'url(#gg)'},svg);
+    el('path',{d,fill:'none',stroke:'#3b3fd8','stroke-width':2.2,'vector-effect':'non-scaling-stroke','stroke-linejoin':'round'},svg);
+    const l=P[P.length-1];el('circle',{cx:l[0]-3,cy:l[1],r:4,fill:'#3b3fd8'},svg);
+  };
+  const upd=(anim)=>{
+    const from=parseFloat($('#liveBig').dataset.v||0);
+    countTo($('#liveBig'),from,total,anim?900:0,v=>fmtS(v));$('#liveBig').dataset.v=total;
+    $('#livePct').textContent=nf(total/META*100,1)+' %';$('#liveBar').style.width=Math.min(100,total/META*100)+'%';
+    $('#lf1').textContent=nf(pagos);$('#lf2').textContent='S/ '+nf(Math.round(total/0.41/1000))+'k';draw();
+  };
+  setTimeout(()=>upd(true),700);
+  if(!RM)setInterval(()=>{const add=400+Math.random()*2600;total+=add;pagos+=1+Math.round(add/900);pts.push(total);if(pts.length>40)pts.shift();upd(true)},2600);
+})();
+
+function countTo(node,from,to,ms,fmt){if(RM||!ms){node.textContent=fmt(to);return}
+  const t0=performance.now();const step=t=>{const k=Math.min(1,(t-t0)/ms),e=1-Math.pow(1-k,3);node.textContent=fmt(from+(to-from)*e);if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step)}
+
+/* ---- marquee ---- */
+const TOOLS=['Power BI','DAX','SQL','MySQL','Python','pandas','HTML','JavaScript','Excel','Looker Studio','Apps Script','GA4'];
+$('#track').innerHTML=[...TOOLS,...TOOLS].map(t=>`<span>${t}</span>`).join('');
+
+/* ---- progreso + nav activa ---- */
+const secs=['inicio','destacado','camino','laboratorio','metodo','contacto'].map(id=>document.getElementById(id));
+addEventListener('scroll',()=>{
+  const h=document.documentElement;$('#prog').style.transform=`scaleX(${h.scrollTop/(h.scrollHeight-h.clientHeight)})`;
+  let cur='inicio';secs.forEach(s=>{if(s.getBoundingClientRect().top<innerHeight*.4)cur=s.id});
+  $$('nav.top a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+cur&&cur!=='inicio'));
+},{passive:true});
+
+/* ---- reveal + count-up ---- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const t=e.target;t.classList.add('in');io.unobserve(t);
+  t.querySelectorAll('[data-count]').forEach(n=>{const d=+(n.dataset.dec||0);countTo(n,0,+n.dataset.count,1600,v=>nf(v,d))});
+  if(t.dataset.onin)window[t.dataset.onin]();
+}),{threshold:.18,rootMargin:'0px 0px -40px 0px'});
+$$('.rv,.meter').forEach(n=>io.observe(n));
+$$('.nums > div').forEach(n=>io.observe(n));
+
+/* =================== GESTORAS (simulado) =================== */
+const G=[
+ {n:'Gestora A',con:9.0,lla:5.9,rate:72.4,comp:45,ter:33,tit:22,av:101.2,pa:[30,5,52,2,0,11]},
+ {n:'Gestora B',con:8.6,lla:5.7,rate:60.8,comp:47,ter:22,tit:31,av:100.4,pa:[31,8,7,34,15,5]},
+ {n:'Gestora C',con:8.8,lla:5.8,rate:86.1,comp:43,ter:32,tit:25,av:98.3,pa:[12,8,30,31,12,7]},
+ {n:'Gestora D',con:8.1,lla:5.8,rate:77.0,comp:37,ter:35,tit:28,av:98.0,pa:[33,4,0,45,10,8]},
+ {n:'Gestora E',con:7.8,lla:5.7,rate:83.2,comp:37,ter:41,tit:22,av:97.9,pa:[14,9,24,24,22,7]},
+];
+const PAU=['Almuerzo','Baño','Envío de información','Marcación manual','Reunión','Otros'];
+const PAUC=[css('--s1'),css('--s2'),css('--s3'),css('--s4'),css('--s5'),'#b8b7c4'];
+const OUT=[['Compromiso','comp',css('--indigo')],['Titular sin compromiso','tit',css('--s3')],['Tercero','ter','#c4c3d3']];
+const HRS=[[7,.1],[8,2.9],[9,4.4],[10,5.0],[11,6.2],[12,5.1],[13,2.6],[14,5.8],[15,4.8],[16,5.0],[17,3.4],[18,2.5],[19,1.7],[20,.3]];
+let gSel=-1,gDrawn=false;
+$('#gChips').innerHTML=['Todo el equipo',...G.map(g=>g.n)].map((t,i)=>`<button aria-pressed="${i===0}" data-i="${i-1}">${t}</button>`).join('');
+$('#gOutL').innerHTML=OUT.map(o=>`<span><i style="background:${o[2]}"></i>${o[0]}</span>`).join('');
+$('#gPauL').innerHTML=PAU.map((p,i)=>`<span><i style="background:${PAUC[i]}"></i>${p}</span>`).join('');
+const rowsBy=(arr,fn)=>arr.map((g,i)=>fn(g,i)).join('');
+function gBuild(){
+  const maxRate=90;
+  $('#gConn').innerHTML=rowsBy(G,(g,i)=>`<div class="hb" data-g="${i}" data-tip="<b>${g.n}</b><br>Conectada ${nf(g.con,1)} h · llamando ${nf(g.lla,1)} h<br>${Math.round(g.lla/g.con*100)} % del tiempo conectada"><span>${g.n}</span><div class="tr"><i style="background:#d6d5e6" data-w="${g.con/10*100}"></i><i style="background:var(--navy)" data-w="${g.lla/10*100}"></i></div><span class="v">${Math.round(g.lla/g.con*100)} %</span></div>`);
+  const byRate=[...G.keys()].sort((a,b)=>G[b].rate-G[a].rate);
+  $('#gRate').innerHTML=byRate.map(i=>{const g=G[i];return `<div class="hb" data-g="${i}" data-tip="<b>${g.n}</b><br>${nf(g.rate,1)} llamadas por hora<br>Avance de meta ${nf(g.av,1)} %"><span>${g.n}</span><div class="tr"><i style="background:var(--indigo)" data-w="${g.rate/maxRate*100}"></i></div><span class="v">${nf(g.rate,1)}</span></div>`}).join('');
+  $('#gOut').innerHTML=rowsBy(G,(g,i)=>`<div class="hb" data-g="${i}"><span>${g.n}</span><div class="stk">${OUT.map(o=>`<i style="background:${o[2]}" data-w="${g[o[1]]}" data-tip="<b>${g.n}</b><br>${o[0]}: ${g[o[1]]} %"></i>`).join('')}</div><span class="v">${g.comp} %</span></div>`);
+  $('#gPau').innerHTML=rowsBy(G,(g,i)=>`<div class="hb" data-g="${i}"><span>${g.n}</span><div class="stk">${g.pa.map((v,j)=>`<i style="background:${PAUC[j]}" data-w="${v}" data-tip="<b>${g.n}</b><br>${PAU[j]}: ${v} % de las pausas"></i>`).join('')}</div><span class="v" style="font-weight:400;color:var(--mute);font-size:11px"></span></div>`);
+  const mx=Math.max(...HRS.map(h=>h[1]));
+  $('#gHours').innerHTML=HRS.map(([h,v])=>`<div data-tip="<b>${h}:00</b><br>${nf(v,1)} mil llamadas"><i data-h="${v/mx*100}" style="${v===mx?'background:var(--s2)':''}"></i></div>`).join('');
+  $('#gHoursX').innerHTML=HRS.map(h=>`<span>${h[0]}</span>`).join('');
+}
+function gRender(){
+  const team=gSel<0;
+  $$('#gPanel [data-g]').forEach(r=>r.classList.toggle('dim',!team&&+r.dataset.g!==gSel));
+  const s=team?{n:'Equipo',rate:G.reduce((a,g)=>a+g.rate,0)/5,lla:G.reduce((a,g)=>a+g.lla,0)/5,comp:G.reduce((a,g)=>a+g.comp,0)/5,av:G.reduce((a,g)=>a+g.av,0)/5}:G[gSel];
+  const k=[['Llamadas por hora',s.rate,1,''],['Horas llamando al día',s.lla,1,' h'],['Contestadas que terminan en compromiso',s.comp,0,' %'],['Avance de meta',s.av,1,' %']];
+  if(!$('#gKpis').children.length)$('#gKpis').innerHTML=k.map(x=>`<div><b data-v="0">0</b><span>${x[0]}</span></div>`).join('');
+  [...$('#gKpis').children].forEach((d,i)=>{const b=d.querySelector('b');const from=+b.dataset.v;b.dataset.v=k[i][1];
+    countTo(b,from,k[i][1],700,v=>nf(v,k[i][2])+k[i][3]);
+    b.style.color=i===3?(k[i][1]>=100?'var(--good)':'var(--bad)'):''});
+  $('#gConcl').innerHTML=team
+   ? '<b>Lectura del equipo:</b> la gestora más rápida (C, 86 llamadas por hora) no llega a la meta. A y B sí llegan, y son las que más contactos convierten en compromiso.'
+   : (()=>{const g=G[gSel];const pass=g.av>=100;const top=PAU[g.pa.indexOf(Math.max(...g.pa))];
+      return `<b>${g.n}:</b> ${pass?'pasa la meta':'se queda a '+nf(100-g.av,1)+' pts de la meta'}. Llama ${nf(g.rate,1)} veces por hora y el ${g.comp} % de lo contestado termina en compromiso. Su pausa más larga es <b>${top.toLowerCase()}</b>${top==='Envío de información'?', algo que se puede automatizar':''}.`})();
+}
+window.gIn=function(){if(gDrawn)return;gDrawn=true;
+  requestAnimationFrame(()=>{$$('#gPanel [data-w]').forEach(i=>i.style.width=i.dataset.w+'%');$$('#gPanel [data-h]').forEach(i=>i.style.height=i.dataset.h+'%')});gRender()};
+gBuild();$('#gPanel').dataset.onin='gIn';
+$('#gChips').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$$('#gChips button').forEach(x=>x.setAttribute('aria-pressed',x===b));gSel=+b.dataset.i;gRender()});
+
+/* =================== gráfico de líneas =================== */
+function lineChart(host,{xs,series,xFmt=String,yFmt=String,yMax,h=300,refs=[],animate=true}){
+  host.innerHTML='';
+  const W=host.clientWidth||700,m={l:58,r:18,t:16,b:30},iw=W-m.l-m.r,ih=h-m.t-m.b;
+  const svg=el('svg',{viewBox:`0 0 ${W} ${h}`,width:'100%',height:h},host);
+  const x=i=>m.l+iw*(i/(xs.length-1)),y=v=>m.t+ih*(1-v/yMax);
+  for(let k=0;k<=4;k++){const v=yMax*k/4;el('line',{x1:m.l,x2:W-m.r,y1:y(v),y2:y(v),stroke:'#ebe9e2'},svg);txt(svg,m.l-10,y(v)+4,yFmt(v),{'text-anchor':'end'})}
+  const step=Math.ceil(xs.length/(W<500?6:12));
+  xs.forEach((d,i)=>{if(i%step===0||i===xs.length-1)txt(svg,x(i),h-8,xFmt(d),{'text-anchor':'middle'})});
+  refs.forEach(r=>{el('line',{x1:m.l,x2:W-m.r,y1:y(r.v),y2:y(r.v),stroke:'#43465e','stroke-width':1.3,'stroke-dasharray':'2 4'},svg);txt(svg,W-m.r,y(r.v)-7,r.label,{'text-anchor':'end',fill:'#43465e','font-weight':600})});
+  series.forEach(s=>{
+    const pts=s.values.map((v,i)=>v==null?null:[x(i),y(v)]).filter(Boolean);if(!pts.length)return;
+    const p=el('path',{d:'M'+pts.map(q=>q.join(',')).join('L'),fill:'none',stroke:s.color,'stroke-width':2.4,'stroke-dasharray':s.dash||'','stroke-linejoin':'round','stroke-linecap':'round'},svg);
+    if(animate&&!s.dash&&!RM){const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;p.getBoundingClientRect();p.style.transition='stroke-dashoffset 1.6s cubic-bezier(.2,.7,.1,1)';p.style.strokeDashoffset=0}
+    if(s.end){const q=pts[pts.length-1];el('circle',{cx:q[0],cy:q[1],r:5,fill:s.color,stroke:'#fff','stroke-width':2},svg);if(s.endLabel)txt(svg,q[0]+8,q[1]+4,s.name,{fill:'#0f1123','font-weight':600})}
+  });
+  const cross=el('line',{y1:m.t,y2:m.t+ih,stroke:'#0f1123','stroke-opacity':.25,visibility:'hidden'},svg);
+  const dots=series.map(s=>el('circle',{r:5,fill:s.color,stroke:'#fff','stroke-width':2,visibility:'hidden'},svg));
+  const hit=el('rect',{x:m.l,y:m.t,width:iw,height:ih,fill:'transparent'},svg);
+  hit.addEventListener('pointermove',ev=>{
+    const r=svg.getBoundingClientRect(),px=(ev.clientX-r.left)*(W/r.width);
+    const i=Math.max(0,Math.min(xs.length-1,Math.round((px-m.l)/iw*(xs.length-1))));
+    cross.setAttribute('x1',x(i));cross.setAttribute('x2',x(i));cross.setAttribute('visibility','visible');
+    let html=`<b>${xFmt(xs[i])}</b>`;
+    series.forEach((s,j)=>{const v=s.values[i];if(v==null){dots[j].setAttribute('visibility','hidden');return}
+      dots[j].setAttribute('cx',x(i));dots[j].setAttribute('cy',y(v));dots[j].setAttribute('visibility','visible');
+      html+=`<br><span style="color:${s.color}">●</span> ${s.name}: <b>${yFmt(v)}</b>`});
+    hit.dataset.tip=html;
+  });
+  hit.addEventListener('pointerleave',()=>{cross.setAttribute('visibility','hidden');dots.forEach(d=>d.setAttribute('visibility','hidden'))});
+}
+
+/* ---- rediseño etapa 1 ---- */
+const MES=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Set','Oct','Nov','Dic'];
+const RED=[
+  {name:'2020',color:css('--s1'),values:[34,27,28,42,35,25,33,37,40,48,52,42]},
+  {name:'2021',color:css('--s2'),values:[43,50,59,43,43,45,36,60,19,25,37,25]},
+  {name:'2022',color:css('--s3'),values:[34,40,34,39,32,34,37,60,29,18,9,0]},
+];
+$('#lgRed').innerHTML=RED.map(s=>`<span><i style="background:${s.color};height:3px;width:16px"></i>${s.name}</span>`).join('');
+let redDone=false;
+window.drawRed=()=>{redDone=true;lineChart($('#chRed'),{xs:MES.map((_,i)=>i),xFmt:i=>MES[i],yFmt:v=>Math.round(v)+' M',yMax:80,h:280,series:RED.map(s=>Object.assign({end:true},s))})};
+$('#chRed').closest('.card').dataset.onin='drawRed';
+
+/* ---- demo 1 ---- */
+const HORAS=[];for(let h=7;h<=23;h++)HORAS.push(h);
+const META=160000,TIP=[0,.06,.15,.25,.35,.44,.52,.59,.66,.72,.78,.83,.88,.92,.95,.98,1];
+const HOY=TIP.map((p,i)=>152500*Math.min(1,p*(1.06-.004*i)+(i>12?(i-12)*.004:0)));
+function renderLive(anim){
+  const hh=+$('#hSl').value,idx=HORAS.indexOf(hh);$('#hLbl').textContent=hh+':00';
+  const cob=HOY[idx],proy=cob/TIP[idx],err=Math.max(.03,.17*(1-idx/16));
+  $('#liveMinis').innerHTML=`<div><b style="color:var(--s1)">${fmtS(cob)}</b><span>cobrado a las ${hh}:00</span></div>
+    <div><b>${nf(cob/META*100,1)} %</b><span>de la meta del día</span></div>
+    <div><b style="color:${proy>=META?'var(--good)':'var(--bad)'}">${fmtS(proy)}</b><span>proyección al cierre</span></div>
+    <div><b style="font-size:16px;padding-top:5px">${fmtS(proy*(1-err))} – ${fmtS(proy*(1+err))}</b><span>rango probable (±${Math.round(err*100)} %)</span></div>`;
+  lineChart($('#chLive'),{animate:anim,xs:HORAS,xFmt:h=>h+'h',yFmt:v=>'S/ '+Math.round(v/1000)+'k',yMax:200000,refs:[{v:META,label:'Meta S/ 160k'}],
+    series:[{name:'Día típico',color:css('--s2'),dash:'6 5',values:TIP.map(p=>p*proy)},{name:'Cobrado hoy',color:css('--s1'),end:true,values:HOY.map((v,i)=>i<=idx?v:null)}]});
+  $('#liveConcl').innerHTML=proy>=META?`<b>Vamos sobre el ritmo.</b> Faltan ${fmtS(META-cob)} y al paso de un día típico se cierra en ${fmtS(proy)}.`
+    :`<b>Al ritmo de ahora no llegamos.</b> Faltan ${fmtS(META-cob)} y la proyección queda ${fmtS(META-proy)} abajo. Toca priorizar a quienes prometieron pagar hoy.`;
+}
+$('#hSl').addEventListener('input',()=>renderLive(false));
+
+/* ---- demo 2 ---- */
+function renderScen(){
+  const host=$('#chScen');host.innerHTML='';
+  const S=[['Peor',96.4],['Pesimista',99.7],['Realista',101.0],['Optimista',102.8]];
+  const W=host.clientWidth||700,rowH=46,m={l:96,r:30,t:28,b:30},h=m.t+m.b+rowH*S.length,iw=W-m.l-m.r;
+  const lo=94,hi=104,x=v=>m.l+iw*(v-lo)/(hi-lo);
+  const svg=el('svg',{viewBox:`0 0 ${W} ${h}`,width:'100%',height:h},host);
+  for(let v=lo;v<=hi;v+=2){el('line',{x1:x(v),x2:x(v),y1:m.t-6,y2:h-m.b,stroke:'#ebe9e2'},svg);txt(svg,x(v),h-10,v+' %',{'text-anchor':'middle'})}
+  el('line',{x1:x(100),x2:x(100),y1:m.t-14,y2:h-m.b,stroke:'#0f1123','stroke-width':1.5,'stroke-dasharray':'3 3'},svg);
+  txt(svg,x(100),m.t-18,'Meta 100 %',{'text-anchor':'middle',fill:'#0f1123','font-weight':600});
+  S.forEach(([n,v],i)=>{
+    const cy=m.t+rowH*i+rowH/2,ok=v>=100,col=ok?css('--good'):css('--bad');
+    txt(svg,m.l-12,cy+4,n,{'text-anchor':'end',fill:'#0f1123','font-size':13,'font-weight':n==='Realista'?700:500});
+    el('line',{x1:x(lo),x2:x(v),y1:cy,y2:cy,stroke:'#e6e4dc','stroke-width':2},svg);
+    const c=el('circle',{cx:x(lo),cy,r:n==='Realista'?8:6,fill:col,stroke:'#fff','stroke-width':2},svg);
+    c.style.transition=`cx 1.2s cubic-bezier(.2,.7,.1,1) ${i*.1}s`;requestAnimationFrame(()=>requestAnimationFrame(()=>c.setAttribute('cx',x(v))));
+    const izq=v>103||(v<100&&v>99);
+    txt(svg,x(v)+(izq?-14:14),cy+4,nf(v,1)+' %'+(ok?' · pasa':' · no llega'),{fill:'#0f1123','font-weight':600,'text-anchor':izq?'end':'start'});
+    el('rect',{x:0,y:cy-rowH/2,width:W,height:rowH,fill:'transparent'},svg).dataset.tip=`<b>${n}</b><br>Cierre ${nf(v,1)} %<br>${ok?'Pasa':'Le faltan'} ${nf(Math.abs(v-100),1)} pts`;
+  });
+}
+
+/* ---- demo 3 ---- */
+function renderSeg(){
+  const D=[['Dejó compromiso de pago',35,96],['Contestó, sin compromiso',21,118],['No contesta',12,171],['Más de 15 días de atraso',7,82]];
+  const sem=p=>p>=30?['var(--good)','alta']:p>=15?['var(--warn)','media']:['var(--bad)','baja'];
+  $('#chSeg').innerHTML='<table><thead><tr><th>Última gestión (7 días)</th><th>Chance de pago</th><th class="num">%</th><th class="num">Clientes</th></tr></thead><tbody>'+
+   D.map(([n,p,c])=>{const [col,lab]=sem(p);return `<tr data-tip="${c} clientes · pagó el ${p} %"><td>${n}</td><td style="width:42%"><div style="display:flex;align-items:center;gap:10px"><div style="flex:1;background:#f0eff7;border-radius:4px;height:12px;overflow:hidden"><div class="segb" data-w="${p/40*100}" style="width:0;height:100%;background:${col};border-radius:0 4px 4px 0;transition:width 1.1s cubic-bezier(.2,.7,.1,1)"></div></div><span style="font-size:12px;font-weight:600;color:${col};min-width:48px">● ${lab}</span></div></td><td class="num"><b>${p} %</b></td><td class="num">${c}</td></tr>`}).join('')+'</tbody></table>';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>$$('.segb').forEach(b=>b.style.width=b.dataset.w+'%')));
+}
+
+/* ---- pestañas del laboratorio ---- */
+const labR={p1:()=>renderLive(true),p2:renderScen,p3:renderSeg};
+$('#labTabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  $$('#labTabs button').forEach(x=>x.setAttribute('aria-selected',x===b));
+  $$('.lp').forEach(p=>p.hidden=p.id!==b.dataset.p);labR[b.dataset.p]()});
+window.labIn=()=>renderLive(true);$('.lab').dataset.onin='labIn';
+
+/* ---- pestañas Power BI ---- */
+$('#pbiTabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  $$('#pbiTabs button').forEach(x=>x.setAttribute('aria-selected',x===b));
+  const img=$('#pbiImg');img.style.opacity=0;
+  setTimeout(()=>{img.src=b.dataset.img;$('#pbiCap').textContent=b.dataset.cap;$('#pbiName').textContent='Campo Cobranzas · '+b.textContent;img.onload=()=>img.style.opacity=1},250)});
+
+/* ---- zoom del destacado ---- */
+const zw=$('#zoom');
+zw.addEventListener('pointermove',e=>{const r=zw.getBoundingClientRect();zw.style.setProperty('--zx',((e.clientX-r.left)/r.width*100)+'%');zw.style.setProperty('--zy',((e.clientY-r.top)/r.height*100)+'%')});
+
+/* ---- lightbox ---- */
+const lb=$('#lb');
+document.addEventListener('click',e=>{
+  const s=e.target.closest('.shot-lb');
+  if(s&&!e.target.closest('#zoom')){lb.querySelector('img').src=s.src;lb.style.display='flex'}
+  else if(e.target.closest('#lb'))lb.style.display='none';
+});
+zw.addEventListener('click',()=>{lb.querySelector('img').src=zw.querySelector('img').src;lb.style.display='flex'});
+addEventListener('keydown',e=>{if(e.key==='Escape')lb.style.display='none'});
+
+/* ---- redimensionar ---- */
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(redDone)drawRed();const a=$('#labTabs [aria-selected="true"]').dataset.p;if(a!=='p3')labR[a]()},200)});
+</script>
+</body>
+</html>
